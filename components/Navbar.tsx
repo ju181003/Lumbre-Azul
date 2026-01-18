@@ -27,14 +27,13 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView, setView }) => {
     }
   };
 
+  // REORGANIZACIÓN ESTRATÉGICA: Prioridad a módulos de negocio
   const navItems = [
-    { label: 'TRACKING', view: ViewState.TRACKING },
-    { label: 'NOSOTROS', view: ViewState.PHILOSOPHY },
+    { label: 'CORE SYSTEM', view: ViewState.TRACKING, highlight: true },
+    { label: 'VIAJES', view: ViewState.HOME, section: 'expeditions' },
     { label: 'TIENDA', view: ViewState.SHOP },
-    { label: 'PROTOCOLOS', view: ViewState.HOME, section: 'protocols' },
-    { label: 'NUTRICIÓN', view: ViewState.HOME, section: 'nutrition' },
-    { label: 'HORARIO', view: ViewState.HOME, section: 'schedule' },
-    { label: 'CALENDARIO', view: ViewState.HOME, section: 'calendar' }
+    { label: 'NOSOTROS', view: ViewState.PHILOSOPHY },
+    { label: 'INTEL / PROTOCOLOS', view: ViewState.HOME, section: 'intel' }, // Agrupa Nutrición, Horario, etc.
   ];
 
   return (
@@ -67,13 +66,12 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView, setView }) => {
           className="flex-1 overflow-x-auto py-2 md:py-0"
           style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }} // Hide scrollbar Firefox/IE
         >
-             {/* Hide webkit scrollbar via arbitrary class if possible, or rely on overflow-x-auto */}
              <div className="flex items-center px-6 md:px-0 space-x-6 md:space-x-8 md:justify-end md:h-16 min-w-max [&::-webkit-scrollbar]:hidden">
                 {navItems.map((item, idx) => (
                    <button 
                       key={idx}
                       onClick={() => handleNavigation(item.view, item.section)} 
-                      className="text-[10px] md:text-xs font-mono text-gray-400 hover:text-white uppercase tracking-widest hover:underline decoration-lumbre-blue underline-offset-4 transition-all"
+                      className={`text-[10px] md:text-xs font-mono uppercase tracking-widest hover:underline decoration-lumbre-blue underline-offset-4 transition-all ${item.highlight ? 'text-lumbre-blue font-bold' : 'text-gray-400 hover:text-white'}`}
                    >
                       {item.label}
                    </button>

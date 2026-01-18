@@ -81,13 +81,6 @@ export const Hero: React.FC<HeroProps> = ({ setView }) => {
            LUMBRE AZUL
          </h1>
       </div>
-      
-      {/* HUD Elements */}
-      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20 flex space-x-2">
-         <div className="w-2 h-2 bg-white rounded-full animate-pulse"></div>
-         <div className="w-2 h-2 bg-gray-600 rounded-full"></div>
-         <div className="w-2 h-2 bg-gray-600 rounded-full"></div>
-      </div>
 
     </div>
   );

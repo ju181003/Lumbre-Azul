@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import { Activity, Bell, Upload, Scan, CheckCircle, AlertTriangle, Target, ChevronRight, Clock, Flame, Scale, Droplets, Plus, CheckSquare, Square, Brain, Zap, Dumbbell, User as UserIcon, LogOut, Key, X, Save, Loader2, BarChart3, Trash2, Settings2, PlusCircle } from 'lucide-react';
+import { Activity, Bell, Upload, Scan, CheckCircle, Target, Clock, Flame, Scale, Droplets, Plus, CheckSquare, Square, Brain, Zap, Dumbbell, User as UserIcon, LogOut, Key, X, Save, Loader2, BarChart3, Trash2, Settings2, PlusCircle, Lock } from 'lucide-react';
 import { analyzeFoodImage } from '../services/geminiService';
 import { auth, db, User, timestamp } from '../services/firebase';
 
@@ -24,6 +24,9 @@ const DEFAULT_HABITS: Habit[] = [
 ];
 
 export const TrackingApp: React.FC<TrackingAppProps> = ({ user }) => {
+  // PAYWALL STATE
+  const [isSubscribed, setIsSubscribed] = useState(false); // Default to false to show paywall
+  
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [analysisResult, setAnalysisResult] = useState<string | null>(null);
@@ -59,6 +62,9 @@ export const TrackingApp: React.FC<TrackingAppProps> = ({ user }) => {
   useEffect(() => {
     if (!user) return;
 
+    // Simulate checking subscription status
+    // In a real app, check db.collection('users').doc(uid).subscriptionStatus
+    
     // 1. Load Profile (Biometrics & Habit Template)
     const unsubscribeUser = db.collection('users').doc(user.uid).onSnapshot((doc) => {
         if (doc.exists) {
@@ -226,8 +232,62 @@ export const TrackingApp: React.FC<TrackingAppProps> = ({ user }) => {
     reader.readAsDataURL(selectedFile);
   };
 
+  // --- PAYWALL LOGIC ---
+  const handleSubscribe = () => {
+      // Logic for subscription integration (Stripe, etc.)
+      setIsSubscribed(true); // Mocking success for UX demo
+  }
+
   return (
     <div className="min-h-screen bg-lumbre-black text-white pt-32 md:pt-24 pb-20 px-4 md:px-8 relative">
+      
+      {/* PAYWALL OVERLAY */}
+      {!isSubscribed && (
+          <div className="fixed inset-0 z-40 bg-lumbre-black/80 backdrop-blur-md flex items-center justify-center p-6">
+              <div className="max-w-md w-full bg-lumbre-panel border border-lumbre-blue shadow-[0_0_50px_rgba(37,99,235,0.2)] p-8 text-center relative overflow-hidden">
+                   <div className="absolute top-0 right-0 p-4 opacity-10">
+                       <Lock className="w-24 h-24 text-lumbre-blue" />
+                   </div>
+                   
+                   <div className="relative z-10">
+                       <span className="bg-red-500/20 text-red-500 border border-red-500/50 px-3 py-1 text-[10px] font-mono uppercase tracking-widest mb-4 inline-block">
+                           Acceso Restringido // Nivel Civil
+                       </span>
+                       <h2 className="font-heading text-4xl text-white uppercase mb-4">
+                           Core System
+                       </h2>
+                       <p className="font-mono text-sm text-gray-300 mb-6 leading-relaxed">
+                           El sistema de rastreo, bitácora histórica y escáner IA de nutrición es exclusivo para miembros operativos.
+                           <br/><br/>
+                           <span className="text-white italic">"Lo que no se registra, no existe."</span>
+                       </p>
+                       
+                       <div className="mb-8 p-4 bg-white/5 border border-white/10">
+                           <div className="font-heading text-3xl text-lumbre-blue">$159 MXN <span className="text-sm text-gray-500 font-mono">/ MES</span></div>
+                           <p className="text-[10px] text-gray-500 font-mono mt-1">CANCELACIÓN EN CUALQUIER MOMENTO</p>
+                       </div>
+
+                       <button 
+                         onClick={handleSubscribe}
+                         className="w-full py-4 bg-lumbre-blue hover:bg-white hover:text-black text-white font-heading text-xl uppercase tracking-widest transition-colors flex items-center justify-center space-x-2"
+                       >
+                           <Lock className="w-5 h-5" />
+                           <span>Suscribirme Ahora</span>
+                       </button>
+
+                       <button 
+                         onClick={() => window.location.reload()} 
+                         className="mt-4 text-[10px] font-mono text-gray-500 underline hover:text-white"
+                       >
+                           RESTAURAR COMPRA
+                       </button>
+                   </div>
+              </div>
+          </div>
+      )}
+
+      {/* --- CONTENT BELOW IS BLURRED IF NOT SUBSCRIBED --- */}
+      <div className={!isSubscribed ? 'filter blur-sm pointer-events-none select-none opacity-50' : ''}>
       
       {/* PERFORMANCE HUD */}
       <div className="max-w-7xl mx-auto mb-8 animate-in fade-in slide-in-from-top-4 duration-700">
@@ -478,6 +538,7 @@ export const TrackingApp: React.FC<TrackingAppProps> = ({ user }) => {
             </div>
         </div>
 
+      </div>
       </div>
     </div>
   );

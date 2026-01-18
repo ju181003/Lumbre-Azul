@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Activity as ActivityType, ViewState } from '../types';
 import { askNutritionAI } from '../services/geminiService';
-import { ChevronRight, Mountain, Waves, Flame, Tent, Fish, Clock, Calendar, ShoppingBag, Music, Package, Apple, Bot, Loader2, Camera, MapPin, Compass, Dumbbell, Zap, Users, ExternalLink, Play, Monitor, Trophy, Target, ArrowUpRight, Activity } from 'lucide-react';
+import { ChevronRight, Mountain, Waves, Flame, Tent, Fish, Clock, Calendar, ShoppingBag, Music, Package, Apple, Bot, Loader2, Camera, MapPin, Compass, Dumbbell, Zap, Users, ExternalLink, Play, Monitor, Trophy, Target, ArrowUpRight, Activity, BarChart3, Plane, ArrowRight } from 'lucide-react';
 
 const activities: ActivityType[] = [
   {
@@ -45,12 +45,14 @@ const schedule = [
 ];
 
 const calendar2026 = [
-  { month: 'FEB', day: '15', event: 'MEDIO MARATÓN GDL', type: 'RUN', loc: 'GUADALAJARA' },
-  { month: 'MAR', day: '08', event: 'SKY RUN CERRO DE LA SILLA', type: 'TRAIL', loc: 'MONTERREY' },
-  { month: 'ABR', day: '22', event: 'ULTRA TRAIL TAPALPA', type: 'TRAIL', loc: 'TAPALPA' },
-  { month: 'AGO', day: '10', event: 'CRUCE ACUÁTICO CHAPALA', type: 'SWIM', loc: 'CHAPALA' },
-  { month: 'SEP', day: '19', event: 'TRAIL DESIERTO DE LOS LEONES', type: 'TRAIL', loc: 'CDMX' },
-  { month: 'NOV', day: '01', event: 'MARATÓN INT. GUADALAJARA', type: 'RUN', loc: 'GUADALAJARA' },
+  { month: 'FEB', day: '01', event: 'MEDIO MARATÓN GDL', type: 'RUN', loc: 'GUADALAJARA' },
+  { month: 'FEB', day: '6-8', event: 'HYROX GDL', type: 'HYBRID', loc: 'GUADALAJARA' },
+  { month: 'FEB', day: '22', event: 'MEDIO MARATÓN MTY', type: 'RUN', loc: 'MONTERREY' },
+  { month: 'MAR', day: '01', event: 'IRONMAN 70.3', type: 'HYBRID', loc: 'MONTERREY' },
+  { month: 'ABR', day: '19', event: 'MARATÓN PTO VALLARTA', type: 'RUN', loc: 'PTO VALLARTA' },
+  { month: 'JUN', day: 'SEM 1', event: 'MEDIO MARATÓN CDMX', type: 'RUN', loc: 'CDMX' },
+  { month: 'AGO', day: 'TBC', event: 'MARATÓN CDMX', type: 'RUN', loc: 'CDMX' },
+  { month: 'NOV', day: 'TBC', event: 'MARATÓN GDL', type: 'RUN', loc: 'GUADALAJARA' },
 ];
 
 const visualLog = [
@@ -65,10 +67,34 @@ const visualLog = [
 ];
 
 const videoSelection = [
-  { title: 'LA MENTE ES EL LÍMITE', duration: '12:05', img: 'https://images.unsplash.com/photo-1599058945522-28d584b6f0ff?q=80&w=2669&auto=format&fit=crop', views: '20K' },
-  { title: 'DISCIPLINA ES DESTINO', duration: '08:45', img: 'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?q=80&w=2670&auto=format&fit=crop', views: '15K' },
-  { title: 'EL ATLETA HÍBRIDO', duration: '15:20', img: 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=2670&auto=format&fit=crop', views: '32K' },
-  { title: 'NATURALEZA CRUDA', duration: '10:00', img: 'https://images.unsplash.com/photo-1519904981063-b0cf448d479e?q=80&w=2670&auto=format&fit=crop', views: '18K' },
+  { 
+      title: 'MENTALIDAD DE ACERO', 
+      duration: '10:14', 
+      img: 'https://img.youtube.com/vi/-eS14mBhnhA/hqdefault.jpg', 
+      url: 'https://youtu.be/-eS14mBhnhA?si=6kZEz5TBmfZYwaIh',
+      views: 'IMPACTO' 
+  },
+  { 
+      title: 'EL CAMINO DEL GUERRERO', 
+      duration: '08:45', 
+      img: 'https://img.youtube.com/vi/_e--tk58Lvo/hqdefault.jpg', 
+      url: 'https://youtu.be/_e--tk58Lvo?si=04MVZ2roPNY6HE4e',
+      views: 'TACTICO' 
+  },
+  { 
+      title: 'RESILIENCIA TOTAL', 
+      duration: '12:20', 
+      img: 'https://img.youtube.com/vi/VVXZfI_P7-0/hqdefault.jpg', 
+      url: 'https://youtu.be/VVXZfI_P7-0?si=aJXeL9eLkpNKLeSb',
+      views: 'FUERZA' 
+  },
+  { 
+      title: 'DISCIPLINA ES LIBERTAD', 
+      duration: '06:30', 
+      img: 'https://img.youtube.com/vi/lBVfExPgyKU/hqdefault.jpg', 
+      url: 'https://youtu.be/lBVfExPgyKU?si=MqFu_GG3Q7UJDMJJ',
+      views: 'ENFOQUE' 
+  },
 ];
 
 interface ActivityGridProps {
@@ -98,121 +124,124 @@ export const ActivityGrid: React.FC<ActivityGridProps> = ({ setView, onActivityS
   };
 
   return (
-    <section id="activities" className="min-h-screen bg-lumbre-black py-20 border-t border-white/10 relative">
+    <section id="activities" className="min-h-screen bg-lumbre-black py-12 md:py-20 border-t border-white/10 relative">
       {/* Background Grid Pattern */}
       <div className="absolute inset-0 bg-grid-pattern opacity-[0.2] pointer-events-none"></div>
 
       <div className="max-w-7xl mx-auto px-6">
         
-        {/* IDENTITY BLOCK */}
-        <div className="mb-20 relative">
-            <div className="absolute -left-4 top-0 bottom-0 w-1 bg-gradient-to-b from-lumbre-blue to-lumbre-green opacity-80"></div>
-            <div className="bg-lumbre-panel border border-white/10 shadow-sm p-8 md:p-12 relative overflow-hidden backdrop-blur-sm">
-                
-                {/* Decoration */}
-                <div className="absolute top-0 right-0 p-4 opacity-10">
-                    <Flame className="w-32 h-32 text-lumbre-blue opacity-20" />
-                </div>
+        {/* === MÓDULOS OPERATIVOS (THE 3 PILLARS) === */}
+        <div className="mb-24">
+             <div className="flex items-center space-x-2 mb-8 border-b border-white/10 pb-2">
+                <Compass className="w-4 h-4 text-lumbre-blue" />
+                <span className="text-lumbre-blue font-mono text-xs tracking-widest uppercase">SISTEMA LUMBRE AZUL // SELECCIONA MÓDULO</span>
+             </div>
 
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start relative z-10">
-                    <div>
-                        <span className="text-lumbre-blue font-mono text-xs tracking-widest mb-2 block">
-                            // IDENTIFICACIÓN DEL SISTEMA
-                        </span>
-                        <h2 className="font-heading text-5xl md:text-7xl text-white uppercase leading-none mb-6">
-                            LUMBRE AZUL <br />
-                            <span className="text-gray-500">CORE SYSTEM</span>
-                        </h2>
-                        <div className="flex space-x-2">
-                             <span className="px-2 py-1 bg-lumbre-blue/10 border border-lumbre-blue/30 text-lumbre-blue text-[10px] font-mono tracking-widest uppercase">Calidad Humana</span>
-                             <span className="px-2 py-1 bg-lumbre-green/10 border border-lumbre-green/30 text-lumbre-green text-[10px] font-mono tracking-widest uppercase">Fitness Táctico</span>
-                        </div>
-                    </div>
-                    <div className="font-mono text-sm text-gray-400 space-y-6">
-                        <p className="leading-relaxed text-lg font-light border-b border-white/10 pb-4 text-gray-200">
-                            Somos dos amigos mexicanos forjados en la dualidad: <span className="text-lumbre-blue font-bold">MAR</span> y <span className="text-lumbre-green font-bold">FUEGO</span>.
-                        </p>
-                        <p className="leading-relaxed text-gray-400">
-                            Más allá del deporte, buscamos <strong>generar experiencias crudas</strong>. Salir al aire libre no es una opción, es un mandato biológico. Nos importa disfrutar de nuestro planeta, elevar nuestra calidad de vida y, sobre todo, habitar el <strong>presente</strong> con intensidad radical.
-                        </p>
-                        <p className="leading-relaxed text-gray-400">
-                            Lumbre Azul es un sistema de mejoramiento integral: nutrición real, estilo de vida consciente, mentalidad de acero y la calidez de la amistad verdadera.
-                        </p>
-                    </div>
+             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                 
+                 {/* CARD 1: CORE SYSTEM (Highlight) */}
+                 <div className="group relative bg-lumbre-panel border border-lumbre-blue/30 overflow-hidden flex flex-col justify-between min-h-[320px] shadow-[0_0_30px_rgba(37,99,235,0.1)] hover:shadow-[0_0_40px_rgba(37,99,235,0.2)] transition-shadow">
+                     <div className="absolute inset-0 bg-gradient-to-br from-lumbre-blue/10 to-transparent opacity-50"></div>
+                     <div className="p-8 relative z-10">
+                         <div className="flex justify-between items-start mb-6">
+                             <div className="w-12 h-12 bg-lumbre-blue text-white flex items-center justify-center">
+                                 <BarChart3 className="w-6 h-6" />
+                             </div>
+                             <span className="bg-lumbre-blue/20 text-lumbre-blue text-[10px] font-bold px-2 py-1 uppercase tracking-widest border border-lumbre-blue/30">
+                                 RECOMENDADO
+                             </span>
+                         </div>
+                         <h3 className="font-heading text-4xl text-white uppercase mb-2">CORE SYSTEM</h3>
+                         <p className="font-mono text-sm text-gray-400 mb-4">
+                             Seguimiento diario. Rachas. Consistencia. <br/>
+                             <span className="text-white italic">"Lo que no se registra, no existe."</span>
+                         </p>
+                         <div className="font-heading text-2xl text-lumbre-blue mb-1">$159 MXN <span className="text-sm text-gray-500 font-mono">/ MES</span></div>
+                     </div>
+                     <button 
+                        onClick={() => setView(ViewState.TRACKING)}
+                        className="w-full py-4 bg-lumbre-blue hover:bg-white hover:text-black text-white font-heading text-xl uppercase tracking-widest transition-colors flex items-center justify-center space-x-2 relative z-10"
+                     >
+                         <span>Activar Sistema</span>
+                         <ArrowRight className="w-5 h-5" />
+                     </button>
+                 </div>
+
+                 {/* CARD 2: VIAJES OUTDOOR */}
+                 <div className="group relative bg-white/5 border border-white/10 hover:border-lumbre-green/50 overflow-hidden flex flex-col justify-between min-h-[320px] transition-colors">
+                     <div className="p-8 relative z-10">
+                         <div className="flex justify-between items-start mb-6">
+                             <div className="w-12 h-12 bg-white/10 text-lumbre-green flex items-center justify-center border border-white/10 group-hover:bg-lumbre-green group-hover:text-white transition-colors">
+                                 <Plane className="w-6 h-6" />
+                             </div>
+                         </div>
+                         <h3 className="font-heading text-4xl text-white uppercase mb-2">VIAJES OUTDOOR</h3>
+                         <p className="font-mono text-sm text-gray-400">
+                             Inmersiones reales: surf, camp, trail, buceo. <br/>
+                             Tribu en naturaleza.
+                         </p>
+                     </div>
+                     <button 
+                        onClick={() => handleScrollTo('expeditions')}
+                        className="w-full py-4 bg-white/5 hover:bg-lumbre-green hover:text-white text-gray-300 font-heading text-xl uppercase tracking-widest transition-colors flex items-center justify-center space-x-2 relative z-10 border-t border-white/10"
+                     >
+                         <span>Ver Expediciones</span>
+                         <ArrowRight className="w-5 h-5" />
+                     </button>
+                 </div>
+
+                 {/* CARD 3: TIENDA OFICIAL */}
+                 <div className="group relative bg-white/5 border border-white/10 hover:border-white/30 overflow-hidden flex flex-col justify-between min-h-[320px] transition-colors">
+                     <div className="p-8 relative z-10">
+                         <div className="flex justify-between items-start mb-6">
+                             <div className="w-12 h-12 bg-white/10 text-gray-200 flex items-center justify-center border border-white/10 group-hover:bg-white group-hover:text-black transition-colors">
+                                 <ShoppingBag className="w-6 h-6" />
+                             </div>
+                         </div>
+                         <h3 className="font-heading text-4xl text-white uppercase mb-2">TIENDA OFICIAL</h3>
+                         <p className="font-mono text-sm text-gray-400">
+                             Equipo probado. Drops limitados. <br/>
+                             Operativo y sobrio.
+                         </p>
+                     </div>
+                     <button 
+                        onClick={() => setView(ViewState.SHOP)}
+                        className="w-full py-4 bg-white/5 hover:bg-white hover:text-black text-gray-300 font-heading text-xl uppercase tracking-widest transition-colors flex items-center justify-center space-x-2 relative z-10 border-t border-white/10"
+                     >
+                         <span>Ir a Tienda</span>
+                         <ArrowRight className="w-5 h-5" />
+                     </button>
+                 </div>
+
+             </div>
+        </div>
+
+        {/* IDENTITY BLOCK (Smaller now) */}
+        <div className="mb-20 bg-lumbre-panel border border-white/10 p-8 relative overflow-hidden backdrop-blur-sm">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                <div>
+                    <h2 className="font-heading text-3xl text-white uppercase leading-none mb-2">
+                        LUMBRE AZUL <span className="text-gray-600">// MANIFIESTO</span>
+                    </h2>
+                </div>
+                <div className="font-mono text-xs text-gray-400 leading-relaxed border-l border-white/10 pl-4">
+                    <p>
+                        Buscamos generar experiencias crudas. Salir al aire libre es un mandato biológico. Nos importa habitar el <strong>presente</strong> con intensidad radical.
+                    </p>
                 </div>
             </div>
         </div>
 
-        {/* NEW OFFERINGS SECTION */}
-        <div className="mb-32">
-             <div className="flex items-center space-x-2 mb-8 border-b border-white/10 pb-2">
-                <Compass className="w-4 h-4 text-lumbre-green" />
-                <span className="text-lumbre-green font-mono text-xs tracking-widest uppercase">VECTORES OPERATIVOS // LO QUE OFRECEMOS</span>
-             </div>
-             
-             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                
-                {/* 01: EXPERIENCIAS */}
-                <button onClick={() => handleScrollTo('protocols')} className="bg-white/5 border border-white/10 shadow-sm p-6 hover:border-lumbre-blue transition-colors group text-left w-full relative overflow-hidden">
-                   <div className="mb-4 bg-white/5 w-12 h-12 flex items-center justify-center rounded-sm">
-                      <Users className="w-6 h-6 text-lumbre-blue transition-colors" />
-                   </div>
-                   <h3 className="font-heading text-2xl text-white uppercase mb-2">Experiencias de Campo</h3>
-                   <p className="font-mono text-xs text-gray-500">
-                      Viajes de inmersión total. Acampar, surfear y pescar entre amigos. La tribu se forja en la naturaleza.
-                   </p>
-                </button>
-
-                {/* 02: LOGÍSTICA */}
-                <button onClick={() => handleScrollTo('shop')} className="bg-white/5 border border-white/10 shadow-sm p-6 hover:border-lumbre-blue transition-colors group text-left w-full relative overflow-hidden">
-                   <div className="mb-4 bg-white/5 w-12 h-12 flex items-center justify-center rounded-sm">
-                      <Package className="w-6 h-6 text-gray-500 transition-colors" />
-                   </div>
-                   <h3 className="font-heading text-2xl text-white uppercase mb-2">Logística & Equipo</h3>
-                   <p className="font-mono text-xs text-gray-500">
-                      Kit de recomendaciones Amazon y nuestra línea oficial. Equipamiento probado para resistir.
-                   </p>
-                </button>
-
-                {/* 03: FITNESS */}
-                <button onClick={() => handleScrollTo('nutrition')} className="bg-white/5 border border-white/10 shadow-sm p-6 hover:border-lumbre-green transition-colors group text-left w-full relative overflow-hidden">
-                   <div className="mb-4 bg-white/5 w-12 h-12 flex items-center justify-center rounded-sm">
-                      <Dumbbell className="w-6 h-6 text-lumbre-green transition-colors" />
-                   </div>
-                   <h3 className="font-heading text-2xl text-white uppercase mb-2">Ingeniería Humana</h3>
-                   <p className="font-mono text-xs text-gray-500">
-                      Planes nutricionales naturales y entrenamiento híbrido. Optimizamos la máquina biológica.
-                   </p>
-                </button>
-
-                {/* 04: MINDSET */}
-                <button onClick={() => handleScrollTo('schedule')} className="bg-white/5 border border-white/10 shadow-sm p-6 hover:border-lumbre-green transition-colors group text-left w-full relative overflow-hidden">
-                   <div className="mb-4 bg-white/5 w-12 h-12 flex items-center justify-center rounded-sm">
-                      <Zap className="w-6 h-6 text-yellow-500 transition-colors" />
-                   </div>
-                   <h3 className="font-heading text-2xl text-white uppercase mb-2">Mentalidad de Acero</h3>
-                   <p className="font-mono text-xs text-gray-500">
-                      Disciplina y motivación diaria. Forjamos el carácter necesario para conquistar cualquier entorno.
-                   </p>
-                </button>
-
-             </div>
-
-             {/* MISSION SUMMARY */}
-             <div className="mt-8 p-6 bg-white/5 border-l-2 border-lumbre-blue text-center md:text-left shadow-sm">
-                <p className="font-mono text-sm text-gray-400 leading-relaxed">
-                   <span className="text-lumbre-blue font-bold">>> MISIÓN:</span> Queremos que toda la gente aspire a ser diariamente su mejor versión. Buscamos la excelencia <span className="text-white font-bold">FÍSICA, ESPIRITUAL Y MENTAL</span> conectando radicalmente con la naturaleza.
-                </p>
-             </div>
-        </div>
-
-        {/* ACTIVITIES LIST */}
-        <div id="protocols" className="flex flex-col md:flex-row justify-between items-end mb-16 scroll-mt-24">
+        {/* === VIAJES OUTDOOR LIST (Old Protocolos) === */}
+        <div id="expeditions" className="flex flex-col md:flex-row justify-between items-end mb-16 scroll-mt-24 pt-12 border-t border-white/20">
           <div>
-            <h3 className="text-lumbre-green font-mono text-xs tracking-widest mb-2">BASE DE DATOS DE ACTIVIDAD</h3>
+            <h3 className="text-lumbre-green font-mono text-xs tracking-widest mb-2">PRÓXIMAS SALIDAS & EXPERIENCIAS</h3>
             <h2 className="font-heading text-5xl md:text-6xl text-white uppercase leading-none">
-              Protocolos <br/> Disponibles
+              Viajes Outdoor <br/> Disponibles
             </h2>
+          </div>
+          <div className="text-right hidden md:block">
+              <span className="text-gray-500 font-mono text-xs">SOLICITA TU LUGAR EN LA MISIÓN</span>
           </div>
         </div>
 
@@ -239,11 +268,17 @@ export const ActivityGrid: React.FC<ActivityGridProps> = ({ setView, onActivityS
                          {activity.title}
                        </h3>
                     </div>
-                    <p className="font-mono text-sm text-gray-500 group-hover:text-white max-w-xl">
-                      {activity.description}
-                    </p>
+                    <div className="flex items-center space-x-4">
+                        <span className="bg-white/10 px-2 py-0.5 text-[9px] font-mono text-gray-400 uppercase tracking-widest">Ver Detalles</span>
+                        <p className="font-mono text-sm text-gray-500 group-hover:text-white max-w-lg truncate hidden md:block">
+                        {activity.description}
+                        </p>
+                    </div>
                   </div>
-                  <ChevronRight className="w-6 h-6 text-gray-600 group-hover:text-white group-hover:translate-x-2 transition-all" />
+                  <div className="flex items-center space-x-2">
+                      <span className="text-[10px] font-mono text-lumbre-blue uppercase opacity-0 group-hover:opacity-100 transition-opacity">Aplicar</span>
+                      <ChevronRight className="w-6 h-6 text-gray-600 group-hover:text-white group-hover:translate-x-2 transition-all" />
+                  </div>
                 </div>
                 <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
                     <img src={activity.image} className="w-full h-full object-cover filter grayscale contrast-125 brightness-50" alt="" />
@@ -254,118 +289,11 @@ export const ActivityGrid: React.FC<ActivityGridProps> = ({ setView, onActivityS
           ))}
         </div>
 
-         {/* VISUAL LOG (GALLERY) */}
-        <div className="mb-32">
-             <div className="flex items-center space-x-3 mb-8 border-b border-white/10 pb-4">
-                <Camera className="w-5 h-5 text-gray-400"/>
-                <h3 className="font-mono text-xs text-gray-400 uppercase tracking-widest">Bitácora Visual // Registro de Campo</h3>
-             </div>
-             <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
-                 {visualLog.map((item, idx) => (
-                     <div key={idx} className="group relative aspect-square bg-lumbre-panel overflow-hidden border border-white/10">
-                         <img 
-                            src={item.src} 
-                            alt={item.cat} 
-                            className="w-full h-full object-cover filter grayscale contrast-125 group-hover:filter-none group-hover:scale-110 transition-all duration-500" 
-                         />
-                         
-                         {/* Overlay Data */}
-                         <div className="absolute bottom-0 left-0 w-full p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-300 bg-gradient-to-t from-black/80 to-transparent">
-                             <div className="flex items-center space-x-1 text-[10px] text-lumbre-blue font-mono font-bold uppercase mb-1">
-                                <MapPin className="w-3 h-3" />
-                                <span>{item.loc}</span>
-                             </div>
-                             <div className="text-white font-heading text-xl uppercase tracking-widest">{item.cat}</div>
-                         </div>
-                     </div>
-                 ))}
-             </div>
-        </div>
-
-        {/* YOUTUBE MOTIVATION SECTION */}
-        <div className="mb-32">
-             <div className="flex items-center justify-between mb-8 border-b border-white/10 pb-4">
-                <div className="flex items-center space-x-3">
-                    <Monitor className="w-5 h-5 text-gray-400"/>
-                    <h3 className="font-mono text-xs text-gray-400 uppercase tracking-widest">Transmisiones // Motivación</h3>
-                </div>
-                <span className="text-[10px] text-gray-500 font-mono hidden md:inline-block">ARCHIVO DE ENTRENAMIENTO MENTAL</span>
-             </div>
-             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                {videoSelection.map((video, idx) => (
-                    <a href="#" key={idx} className="group block bg-white/5 border border-white/10 shadow-sm overflow-hidden hover:border-lumbre-blue transition-colors">
-                        <div className="aspect-video relative overflow-hidden">
-                             <img src={video.img} alt={video.title} className="w-full h-full object-cover filter grayscale contrast-125 group-hover:scale-105 transition-transform duration-500"/>
-                             <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors"></div>
-                             <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                                 <div className="w-12 h-12 rounded-full bg-lumbre-blue/90 backdrop-blur-sm flex items-center justify-center">
-                                     <Play className="w-5 h-5 text-white fill-white ml-1"/>
-                                 </div>
-                             </div>
-                             <div className="absolute bottom-2 right-2 bg-black/80 px-2 py-1 text-[10px] font-mono text-white">
-                                {video.duration}
-                             </div>
-                        </div>
-                        <div className="p-4">
-                            <h4 className="font-heading text-xl text-white uppercase mb-1 truncate">{video.title}</h4>
-                            <div className="flex justify-between items-center text-[10px] text-gray-500 font-mono">
-                                <span>YOUTUBE.COM</span>
-                                <span>{video.views} VISITAS</span>
-                            </div>
-                        </div>
-                    </a>
-                ))}
-             </div>
-        </div>
-
-         {/* SHOP & LINKS SECTION */}
-         <div id="shop" className="border-y border-white/10 py-20 mb-32 bg-white/5 scroll-mt-24">
-             <div className="text-center mb-12">
-                 <h3 className="font-heading text-5xl text-white uppercase">Logística & Suministros</h3>
-                 <p className="font-mono text-gray-500 text-sm mt-2">Equipamiento aprobado para la misión</p>
-             </div>
-             
-             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                
-                {/* AMAZON */}
-                <a href="#" className="group block bg-white/5 border border-white/10 p-8 hover:border-yellow-500 transition-all text-center relative shadow-sm">
-                    <Package className="w-10 h-10 text-gray-400 mx-auto mb-4 group-hover:text-yellow-500 transition-colors"/>
-                    <h4 className="font-heading text-2xl text-white uppercase mb-2">Kit Táctico</h4>
-                    <p className="font-mono text-xs text-gray-500 mb-4">Selección oficial de equipo en Amazon.</p>
-                    <span className="inline-block bg-white/10 px-4 py-2 text-[10px] uppercase tracking-widest text-white group-hover:bg-yellow-500 group-hover:text-white transition-colors">
-                        Ver Lista
-                    </span>
-                </a>
-
-                {/* SHOP */}
-                <button 
-                    onClick={() => setView(ViewState.SHOP)}
-                    className="w-full group block bg-gradient-to-b from-lumbre-blue/10 to-transparent border border-lumbre-blue/20 p-8 text-center relative overflow-hidden hover:border-lumbre-blue transition-colors cursor-pointer"
-                >
-                    <div className="absolute top-2 right-2 px-2 py-1 bg-lumbre-blue text-[10px] font-bold text-white uppercase">Nuevo Drop</div>
-                    <ShoppingBag className="w-10 h-10 text-lumbre-blue mx-auto mb-4"/>
-                    <h4 className="font-heading text-2xl text-white uppercase mb-2">Tienda Oficial</h4>
-                    <p className="font-mono text-xs text-gray-500 mb-4">Playeras, Termos y Parches.</p>
-                    <div className="grid grid-cols-2 gap-2 mt-4 opacity-50 group-hover:opacity-100 transition-opacity">
-                         <div className="h-16 bg-white/5 rounded flex items-center justify-center text-[10px] text-gray-400 font-mono">
-                            <img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?q=80&w=200&auto=format&fit=crop" className="w-full h-full object-cover opacity-50 grayscale" />
-                         </div>
-                         <div className="h-16 bg-white/5 rounded flex items-center justify-center text-[10px] text-gray-400 font-mono">
-                            <img src="https://images.unsplash.com/photo-1556821840-3a63f95609a7?q=80&w=200&auto=format&fit=crop" className="w-full h-full object-cover opacity-50 grayscale" />
-                         </div>
-                    </div>
-                </button>
-
-                {/* SPOTIFY */}
-                <a href="#" className="group block bg-white/5 border border-white/10 p-8 hover:border-green-500 transition-all text-center relative shadow-sm">
-                    <Music className="w-10 h-10 text-gray-400 mx-auto mb-4 group-hover:text-green-500 transition-colors"/>
-                    <h4 className="font-heading text-2xl text-white uppercase mb-2">Frecuencia Lumbre</h4>
-                    <p className="font-mono text-xs text-gray-500 mb-4">Playlist para el camino.</p>
-                    <span className="inline-block bg-white/10 px-4 py-2 text-[10px] uppercase tracking-widest text-white group-hover:bg-green-500 group-hover:text-white transition-colors">
-                        Escuchar
-                    </span>
-                </a>
-
+        {/* === INTEL / SUPPORT CONTENT === */}
+        <div id="intel" className="mb-12">
+            <div className="flex items-center space-x-2 mb-8 border-b border-white/10 pb-2">
+                <Target className="w-4 h-4 text-gray-500" />
+                <span className="text-gray-500 font-mono text-xs tracking-widest uppercase">INTEL & SOPORTE OPERATIVO</span>
              </div>
         </div>
 
@@ -389,10 +317,6 @@ export const ActivityGrid: React.FC<ActivityGridProps> = ({ setView, onActivityS
                     <div>
                         <span className="text-lumbre-green font-bold text-xs block mb-1">>> CENA</span>
                         <p className="text-gray-500">Caldo de huesos, verduras al vapor, proteína ligera.</p>
-                    </div>
-                     <div>
-                        <span className="text-lumbre-green font-bold text-xs block mb-1">>> SNACK TÁCTICO</span>
-                        <p className="text-gray-500">Nueces de macadamia, fruta de temporada, cecina natural.</p>
                     </div>
                 </div>
 
@@ -439,63 +363,85 @@ export const ActivityGrid: React.FC<ActivityGridProps> = ({ setView, onActivityS
                         </div>
                     ))}
                 </div>
-                <div className="mt-6 p-4 bg-white/5 border border-white/10 text-center">
-                   <p className="text-[10px] text-gray-500 uppercase tracking-widest mb-1">Foco Principal</p>
-                   <p className="text-white font-bold uppercase">Constancia sobre Intensidad</p>
-                </div>
             </div>
         </div>
 
-        {/* CALENDAR */}
-        <div id="calendar" className="mb-32 scroll-mt-24">
-            <div className="flex items-center space-x-3 mb-8">
+        {/* CALENDAR & VISUAL LOG & VIDEOS (GROUPED) */}
+        <div id="calendar" className="mb-32">
+             <div className="flex items-center space-x-3 mb-8">
                 <Calendar className="w-6 h-6 text-white"/>
                 <h3 className="font-heading text-5xl text-white uppercase">Calendario Táctico 2026</h3>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-20">
                 {calendar2026.map((event, idx) => (
                     <div key={idx} className="bg-white/5 border border-white/10 shadow-sm p-6 hover:border-lumbre-blue transition-colors group relative overflow-hidden">
                         <div className="flex justify-between items-start mb-4 relative z-10">
                             <span className="text-4xl font-heading text-white">{event.day}</span>
                             <div className="flex flex-col items-end">
                                 <span className="text-xs font-mono bg-white/10 px-2 py-1 rounded text-gray-400 mb-1">{event.month}</span>
-                                <span className="text-[10px] text-gray-500 uppercase tracking-widest">{event.loc}</span>
+                                <span className="text-[10px] text-gray-500 uppercase tracking-widest text-right leading-tight">{event.loc}</span>
                             </div>
                         </div>
                         <h4 className="font-mono text-sm text-gray-300 uppercase leading-tight h-10 flex items-center relative z-10">
                             {event.event}
                         </h4>
                         <div className="mt-4 w-full h-1 bg-white/10 relative z-10">
-                            <div className={`h-full ${event.type === 'RUN' ? 'bg-lumbre-green' : event.type === 'SWIM' ? 'bg-lumbre-blue' : 'bg-yellow-500'} w-1/3 group-hover:w-full transition-all duration-500`}></div>
+                            <div className={`h-full ${event.type === 'RUN' ? 'bg-lumbre-green' : event.type === 'HYBRID' ? 'bg-yellow-500' : 'bg-lumbre-blue'} w-1/3 group-hover:w-full transition-all duration-500`}></div>
                         </div>
                     </div>
                 ))}
             </div>
-        </div>
 
-         {/* TRAINING CALL TO ACTION */}
-         <div className="mb-20">
-             <div className="relative overflow-hidden bg-white/5 border border-white/10 shadow-sm p-8 md:p-16 text-center group hover:border-gray-500 transition-colors">
-                 
-                 <div className="relative z-10 max-w-3xl mx-auto">
-                     <div className="flex justify-center space-x-4 mb-6 opacity-60">
-                        <Target className="w-6 h-6 text-gray-400" />
-                        <Trophy className="w-6 h-6 text-gray-400" />
-                        <Activity className="w-6 h-6 text-gray-400" />
-                     </div>
-                     <h2 className="font-heading text-3xl md:text-5xl text-white uppercase leading-none mb-6">
-                         Entrenamiento Especializado
-                     </h2>
-                     <p className="font-mono text-xs text-gray-400 mb-8 max-w-xl mx-auto">
-                         ¿Objetivo en la mira? (Medio Maratón, Hyrox, Ironman). Programación táctica personalizada para misiones de alta resistencia.
-                     </p>
-                     <button className="bg-transparent border border-white/30 text-white font-heading text-xl uppercase px-8 py-4 hover:bg-white hover:text-black transition-all duration-300 flex items-center space-x-2 mx-auto">
-                         <span>Solicitar Intel</span>
-                         <ArrowUpRight className="w-5 h-5" />
-                     </button>
-                 </div>
-             </div>
-         </div>
+            {/* Visual Log Grid reused from before */}
+            <div className="mb-20">
+                <div className="flex items-center space-x-3 mb-8 border-b border-white/10 pb-4">
+                    <Camera className="w-5 h-5 text-gray-400"/>
+                    <h3 className="font-mono text-xs text-gray-400 uppercase tracking-widest">Bitácora Visual // Registro de Campo</h3>
+                </div>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+                    {visualLog.map((item, idx) => (
+                        <div key={idx} className="group relative aspect-square bg-lumbre-panel overflow-hidden border border-white/10">
+                            <img src={item.src} alt={item.cat} className="w-full h-full object-cover filter grayscale contrast-125 group-hover:filter-none group-hover:scale-110 transition-all duration-500" />
+                        </div>
+                    ))}
+                </div>
+            </div>
+
+            {/* Videos */}
+            <div className="mb-20">
+                <div className="flex items-center justify-between mb-8 border-b border-white/10 pb-4">
+                    <div className="flex items-center space-x-3">
+                        <Monitor className="w-5 h-5 text-gray-400"/>
+                        <h3 className="font-mono text-xs text-gray-400 uppercase tracking-widest">Transmisiones // Motivación</h3>
+                    </div>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    {videoSelection.map((video, idx) => (
+                        <a href={video.url} target="_blank" rel="noopener noreferrer" key={idx} className="group block bg-white/5 border border-white/10">
+                            <div className="aspect-video relative overflow-hidden">
+                                <img src={video.img} alt={video.title} className="w-full h-full object-cover filter grayscale contrast-125 group-hover:scale-105 transition-transform duration-500"/>
+                                <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                    <div className="w-10 h-10 rounded-full bg-lumbre-blue/90 flex items-center justify-center">
+                                        <Play className="w-4 h-4 text-white fill-white ml-1"/>
+                                    </div>
+                                </div>
+                                <div className="absolute bottom-2 right-2 bg-black/80 px-1.5 py-0.5 text-[9px] font-mono text-white">
+                                    {video.duration}
+                                </div>
+                            </div>
+                            <div className="p-3">
+                                <h4 className="font-heading text-lg text-white uppercase truncate">{video.title}</h4>
+                                <div className="flex justify-between items-center mt-2">
+                                    <span className="text-[9px] font-mono text-gray-500 uppercase tracking-widest">{video.views}</span>
+                                    <ExternalLink className="w-3 h-3 text-gray-600 group-hover:text-lumbre-blue transition-colors" />
+                                </div>
+                            </div>
+                        </a>
+                    ))}
+                </div>
+            </div>
+
+        </div>
 
       </div>
     </section>
